@@ -45,23 +45,11 @@ steps:
     overrideParameters: '-stackName $(stackName) -clientId $(ClientId)'
 
 - task: AzureRmWebAppDeployment@4
-  displayName: 'Deploy app to stack slot'
+  displayName: 'Deploy app to prod'
   inputs:
     connectionType: 'AzureRM'
     azureSubscription: '$(ServiceConnectionName)'
     webAppName: '$(stackName)'
-    deployToSlotOrASE: true
     resourceGroupName: '$(stackName)'
-    slotName: 'staging'
     appType: 'app'
     packageForLinux: '$(zipLocation)'
-
-- task: AzureAppServiceManage@0
-  displayName: 'Swap Staging with Production'
-  inputs:
-    azureSubscription: '$(ServiceConnectionName)'
-    action: 'Swap Slots'
-    sourceSlot: 'staging' 
-    webAppName: '$(stackName)'
-    resourceGroupName: '$(stackName)'
-    swapWithProduction: true
