@@ -1,8 +1,21 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { GraphqlService, GraphqlConfig } from './graphql.service';
+import { HttpClient } from 'selenium-webdriver/http';
 
 describe('AppComponent', () => {
+
+  let graphqlService = {
+
+    getConfig: (): Promise<GraphqlConfig> => {
+      let promise = new Promise<GraphqlConfig>((resolve, reject) => {
+        resolve({ url: "http://foo1" });
+      });
+      return promise;
+    }
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -11,6 +24,9 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      providers: [
+        { provide: GraphqlService, useValue: graphqlService }
+      ]
     }).compileComponents();
   }));
 

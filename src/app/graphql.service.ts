@@ -11,7 +11,7 @@ export class GraphqlService {
   getConfig(): Promise<GraphqlConfig> {
 
     let promise = new Promise<GraphqlConfig>((resolve, reject) => {
-      this.httpService.get("/graphql-config.json").subscribe((value: GraphqlConfig) => {
+      this.httpService.get("/assets/graphql-config.json").subscribe((value: GraphqlConfig) => {
         resolve(value);
       }, (error) => {
         reject(error);

@@ -32,7 +32,7 @@ describe('GraphqlService', () => {
       done();
     });
 
-    let req = httpMock.expectOne('/graphql-config.json');
+    let req = httpMock.expectOne('/assets/graphql-config.json');
     req.flush({ url: "http://foo1" });
 
     httpMock.verify();
