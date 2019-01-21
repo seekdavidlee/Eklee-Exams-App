@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { userInfo } from 'os';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +23,13 @@ export class GraphqlService {
 
   getMe(): Promise<MeDto> {
     let promise = new Promise<MeDto>((resolve, reject) => {
-      this.httpService.get("/.auth/me").subscribe((value: MeDto) => {
-        resolve(value);
+      this.httpService.get("/.auth/me").subscribe((value: RawMeDto) => {
+        let meDto = new MeDto();
+        meDto.username = value.user_id;
+        meDto.idToken = value.id_token;
+        let tenant = value.user_claims.filter(x => x.typ === "http:\/\/schemas.microsoft.com\/identity\/claims\/tenantid")[0];
+        meDto.tenantId = tenant.val;
+        resolve(meDto);
       }, (error) => {
         reject(error);
       });
@@ -41,12 +45,15 @@ export class ClaimDto {
 }
 
 export class MeDto {
+  idToken: string;
+  username: string;
+  tenantId: string;
+}
+
+export class RawMeDto {
   id_token: string;
   user_id: string;
   user_claims: ClaimDto[];
-  toString():string{
-    return JSON.stringify(this.user_claims); 
-  }
 }
 
 export class GraphqlConfig {
