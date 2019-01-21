@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
+import { userInfo } from 'os';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,9 @@ export class MeDto {
   id_token: string;
   user_id: string;
   user_claims: ClaimDto[];
+  toString():string{
+    return JSON.stringify(this.user_claims); 
+  }
 }
 
 export class GraphqlConfig {
