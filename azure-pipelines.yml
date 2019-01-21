@@ -38,6 +38,7 @@ steps:
   displayName: 'Publish tests results'
   inputs:
     testResultsFiles: 'reports/*.xml'
+    searchFolder: '$(System.DefaultWorkingDirectory)'
 
 - task: AzureResourceGroupDeployment@2
   displayName: 'Deploy stack resources'
