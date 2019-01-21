@@ -30,6 +30,8 @@ steps:
       Write-Host "Install angular CLI dependencies"
       ng test --watch=false
       ng build --prod --outputPath=$env:Build_ArtifactStagingDirectory
+      $settings = @{ url="$env:GraphqlUrl" }
+      $settings | ConvertTo-Json -depth 100 | Out-File -encoding $env:Build_ArtifactStagingDirectory\assets\graphql-config.json
       $zipLocation = "$env:Build_ArtifactStagingDirectory\$env:Build_BuildNumber.zip"
       Compress-Archive -Path $env:Build_ArtifactStagingDirectory\* -DestinationPath $zipLocation
       Write-Host "##vso[task.setvariable variable=zipLocation;]$zipLocation"

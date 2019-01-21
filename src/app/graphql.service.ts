@@ -25,10 +25,12 @@ export class GraphqlService {
     let promise = new Promise<MeDto>((resolve, reject) => {
       this.httpService.get("/.auth/me").subscribe((value: RawMeDto) => {
         let meDto = new MeDto();
-        meDto.username = value.user_id;
-        meDto.idToken = value.id_token;
-        let tenant = value.user_claims.filter(x => x.typ === "http:\/\/schemas.microsoft.com\/identity\/claims\/tenantid")[0];
-        meDto.tenantId = tenant.val;
+        if (value) {
+          meDto.username = value.user_id;
+          meDto.idToken = value.id_token;
+          let tenant = value.user_claims.filter(x => x.typ === "http:\/\/schemas.microsoft.com\/identity\/claims\/tenantid")[0];
+          meDto.tenantId = tenant.val;
+        }
         resolve(meDto);
       }, (error) => {
         reject(error);
