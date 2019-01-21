@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GraphqlService } from './graphql.service';
+import { GraphqlService, MeDto } from './graphql.service';
 
 @Component({
   selector: 'app-root',
@@ -13,9 +13,14 @@ export class AppComponent implements OnInit {
   }
   title = 'eklee-exams-app';
   url = "";
+  me: MeDto;
   ngOnInit(): void {
     this.graphqlService.getConfig().then(config => {
       this.url = config.url;
+    });
+
+    this.graphqlService.getMe().then(me => {
+      this.me = me;
     });
   }
 }
