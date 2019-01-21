@@ -37,7 +37,7 @@ steps:
 - task: PublishTestResults@2
   displayName: 'Publish tests results'
   inputs:
-    testResultsFiles: '**/*.xml'
+    testResultsFiles: 'reports/*.xml'
 
 - task: AzureResourceGroupDeployment@2
   displayName: 'Deploy stack resources'
