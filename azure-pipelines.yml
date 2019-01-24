@@ -26,8 +26,8 @@ steps:
       $settings = $settings -replace "%GraphqlUrl%", "$env:GraphqlUrl"
       $settings = $settings -replace "%ClientId%", "$env:ClientId"
       $settings = $settings -replace "%GraphClientId%", "$env:GraphClientId"
-      $settings
-      $settings | Out-File $env:Build_Repository_LocalPath\src\environments\environment.prod.ts
+      Write-Host $settings
+      $settings | Out-File $env:Build_Repository_LocalPath\src\environments\environment.prod.ts -Encoding ASCII
       npm install
       Write-Host "Install angular dependencies"
       npm install -g @angular/cli
