@@ -22,11 +22,11 @@ steps:
       $stackName = $stackName.ToLower().Replace("-", "")
       Write-Host "stackName: $stackName"
       Write-Host "##vso[task.setvariable variable=stackName;]$stackName"
-      $settings = Get-Content environments\environment.prod.ts
+      $settings = Get-Content $env:Build_Repository_LocalPath\environments\environment.prod.ts
       settings -replace "%GraphqlUrl%", "$env:GraphqlUrl"
       settings -replace "%ClientId%", "$env:ClientId"
       settings -replace "%GraphClientId%", "$env:GraphClientId"
-      $settings | Out-File environments\environment.prod.ts
+      $settings | Out-File $env:Build_Repository_LocalPath\environments\environment.prod.ts
       npm install
       Write-Host "Install angular dependencies"
       npm install -g @angular/cli
