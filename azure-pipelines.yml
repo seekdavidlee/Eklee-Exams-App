@@ -22,6 +22,11 @@ steps:
       $stackName = $stackName.ToLower().Replace("-", "")
       Write-Host "stackName: $stackName"
       Write-Host "##vso[task.setvariable variable=stackName;]$stackName"
+      $settings = Get-Content environments\environment.prod.ts
+      settings -replace "%GraphqlUrl%", "$env:GraphqlUrl"
+      settings -replace "%ClientId%", "$env:ClientId"
+      settings -replace "%GraphClientId%", "$env:GraphClientId"
+      $settings | Out-File environments\environment.prod.ts
       npm install
       Write-Host "Install angular dependencies"
       npm install -g @angular/cli
@@ -30,8 +35,6 @@ steps:
       Write-Host "Install angular CLI dependencies"
       ng test --watch=false
       ng build --prod --outputPath=$env:Build_ArtifactStagingDirectory
-      $settings = @{ url="$env:GraphqlUrl" }
-      $settings | ConvertTo-Json -depth 100 | Out-File -encoding ASCII $env:Build_ArtifactStagingDirectory\assets\graphql-config.json
       $zipLocation = "$env:Build_ArtifactStagingDirectory\$env:Build_BuildNumber.zip"
       Compress-Archive -Path $env:Build_ArtifactStagingDirectory\* -DestinationPath $zipLocation
       Write-Host "##vso[task.setvariable variable=zipLocation;]$zipLocation"
@@ -49,7 +52,7 @@ steps:
     location: '$(Location)'
     templateLocation: 'Linked artifact'
     csmFile: 'deployment\template.json'
-    overrideParameters: '-stackName $(stackName) -clientId $(ClientId)'
+    overrideParameters: '-stackName $(stackName)'
 
 - task: AzureRmWebAppDeployment@4
   displayName: 'Deploy app to prod'

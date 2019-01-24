@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-
+import { environment } from './../environments/environment'
 @Injectable({
   providedIn: 'root'
 })
@@ -8,55 +8,22 @@ export class GraphqlService {
 
   constructor(private httpService: HttpClient) { }
 
-  getConfig(): Promise<GraphqlConfig> {
+  private _config: GraphqlConfig;
+  getConfig(): GraphqlConfig {
 
-    let promise = new Promise<GraphqlConfig>((resolve, reject) => {
-      this.httpService.get("/assets/graphql-config.json").subscribe((value: GraphqlConfig) => {
-        resolve(value);
-      }, (error) => {
-        reject(error);
-      });
-    });
+    let _config = new GraphqlConfig();
+    _config.url = environment.graphUrl;
 
-    return promise;
+    return _config;
   }
 
-  getMe(): Promise<MeDto> {
-    let promise = new Promise<MeDto>((resolve, reject) => {
-      this.httpService.get("/.auth/me").subscribe((values: RawMeDto[]) => {
-        let meDto = new MeDto();
-        if (values && values.length > 0) {
-          let value = values[0];
-          meDto.username = value.user_id;
-          meDto.idToken = value.id_token;
-          let tenant = value.user_claims.filter(x => x.typ === "http:\/\/schemas.microsoft.com\/identity\/claims\/tenantid")[0];
-          meDto.tenantId = tenant.val;
-        }
-        resolve(meDto);
-      }, (error) => {
-        reject(error);
-      });
-    });
+  createCandidate(candidate: Candidate): void {
 
-    return promise;
   }
 }
 
-export class ClaimDto {
-  typ: string;
-  val: string;
-}
-
-export class MeDto {
-  idToken: string;
-  username: string;
-  tenantId: string;
-}
-
-export class RawMeDto {
-  id_token: string;
-  user_id: string;
-  user_claims: ClaimDto[];
+export class Candidate {
+  id: string;
 }
 
 export class GraphqlConfig {

@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClient } from '@angular/common/http'
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { GraphqlService } from './graphql.service';
 
@@ -25,16 +24,10 @@ describe('GraphqlService', () => {
     expect(httpMock).toBeTruthy();
   });
 
-  it('can get config', (done) => {
+  it('can get config', () => {
 
-    service.getConfig().then((config) => {
-      expect(config.url).toBe('http://foo1');
-      done();
-    });
+    expect(service.getConfig().url).not.toBeNull();
+    expect(service.getConfig().url).not.toBe("");
 
-    let req = httpMock.expectOne('/assets/graphql-config.json');
-    req.flush({ url: "http://foo1" });
-
-    httpMock.verify();
   });
 });

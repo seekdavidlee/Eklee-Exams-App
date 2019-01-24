@@ -2,19 +2,26 @@ import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { GraphqlService, GraphqlConfig } from './graphql.service';
+import { MsAdalAngular6Service } from 'microsoft-adal-angular6';
 
 describe('AppComponent', () => {
 
   let graphqlService = {
 
-    getConfig: (): Promise<GraphqlConfig> => {
-      let promise = new Promise<GraphqlConfig>((resolve, reject) => {
-        resolve({ url: "http://foo1" });
-      });
-      return promise;
+    getConfig: (): GraphqlConfig => {
+      let config = new GraphqlConfig();
+      config.url = "http://fo";
+      return config;
     },
 
   };
+
+  let adalSvc = {
+    username: "f",
+    profile: {
+      tid: '12345'
+    }
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -25,7 +32,8 @@ describe('AppComponent', () => {
         AppComponent
       ],
       providers: [
-        { provide: GraphqlService, useValue: graphqlService }
+        { provide: GraphqlService, useValue: graphqlService },
+        { provide: MsAdalAngular6Service, useValue: adalSvc }
       ]
     }).compileComponents();
   }));

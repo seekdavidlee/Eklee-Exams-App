@@ -6,10 +6,6 @@
 			"defaultValue": "",
 			"type": "String"
 		},
-		"clientId": {
-			"defaultValue": "",
-			"type": "String"
-		},
 		"config_web_name": {
 			"defaultValue": "web",
 			"type": "String"
@@ -180,15 +176,15 @@
 				"autoHealRules": null,
 				"tracingOptions": null,
 				"vnetName": "",
-				"siteAuthEnabled": true,
+				"siteAuthEnabled": false,
 				"siteAuthSettings": {
-					"enabled": true,
+					"enabled": false,
 					"runtimeVersion": "1.0.0",
-					"unauthenticatedClientAction": "RedirectToLoginPage",
+					"unauthenticatedClientAction": null,
 					"tokenStoreEnabled": true,
 					"allowedExternalRedirectUrls": null,
-					"defaultProvider": "AzureActiveDirectory",
-					"clientId": "[parameters('clientId')]",
+					"defaultProvider": null,
+					"clientId": null,
 					"clientSecret": null,
 					"clientSecretCertificateThumbprint": null,
 					"issuer": null,
@@ -253,45 +249,6 @@
 			"dependsOn": [
 				"[resourceId('Microsoft.Web/sites', variables('stackName'))]",
 				"[resourceId('microsoft.insights/components', variables('stackName'))]"
-			]
-		},
-		{
-			"name": "[concat(variables('stackName'),'/authsettings')]",
-			"apiVersion": "2016-08-01",
-			"type": "Microsoft.Web/sites/config",
-			"location": "[variables('location')]",
-			"properties": {
-				"enabled": true,
-				"runtimeVersion": "1.0.0",
-				"unauthenticatedClientAction": "RedirectToLoginPage",
-				"tokenStoreEnabled": true,
-				"allowedExternalRedirectUrls": null,
-				"defaultProvider": "AzureActiveDirectory",
-				"clientId": "[parameters('clientId')]",
-				"clientSecret": null,
-				"clientSecretCertificateThumbprint": null,
-				"issuer": null,
-				"allowedAudiences": null,
-				"additionalLoginParams": null,
-				"isAadAutoProvisioned": false,
-				"googleClientId": null,
-				"googleClientSecret": null,
-				"googleOAuthScopes": null,
-				"facebookAppId": null,
-				"facebookAppSecret": null,
-				"facebookOAuthScopes": [
-					""
-				],
-				"twitterConsumerKey": null,
-				"twitterConsumerSecret": null,
-				"microsoftAccountClientId": null,
-				"microsoftAccountClientSecret": null,
-				"microsoftAccountOAuthScopes": [
-					""
-				]
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Web/sites', variables('stackName'))]"
 			]
 		}
 	]
