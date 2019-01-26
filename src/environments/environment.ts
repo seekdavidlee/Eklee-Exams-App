@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  graphUrl: 'http://localhost:7071/api/graph',
-  clientId: '05b65aa7-685d-4338-ac5a-68e425cb2264',
-  graphClientId: 'bf2f22db-1da2-46fa-b895-61cc34215e3d'
+  graphUrl: '',
+  clientId: '',
+  graphClientId: ''
 };
 
 /*
