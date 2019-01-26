@@ -5,15 +5,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router';
-import { environment } from './../environments/environment'
+import { environment } from './../environments/environment';
+import { HeaderComponent } from './header/header.component'
 
 const routes: Routes = [
-  { path: '', component: AppComponent, pathMatch: 'full', canActivate: [AuthenticationGuard] }
+  { path: '', component: HeaderComponent, pathMatch: 'full', canActivate: [AuthenticationGuard] }
 ];
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeaderComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

@@ -46,3 +46,5 @@ package-lock.json
 
 reports*
 .graphqlconfig
+
+/src/environments/*.local.ts

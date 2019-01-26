@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  graphUrl: '',
+  graphUrl: 'http://localhost:7071/api/graph',
   clientId: '',
   graphClientId: ''
 };
