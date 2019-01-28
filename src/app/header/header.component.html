@@ -2,7 +2,6 @@
   <h2>Me: {{ me.userName }} </h2>
   <h2>Tenant Id: {{ me.profile.tid }}</h2>
   <h2>Display Name: {{ me.profile.name }}</h2>
-  <h2>Token: {{graphToken}}</h2>
 </div>
-<h2>Url: {{ url }}</h2>
+
 <h2 *ngIf="!me">Me: Not logged in.</h2>

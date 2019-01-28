@@ -1,41 +1,24 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { MsAdalAngular6Module, AuthenticationGuard } from 'microsoft-adal-angular6';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { Routes, RouterModule } from '@angular/router';
-import { environment } from './../environments/environment';
-import { HeaderComponent } from './header/header.component'
-
-const routes: Routes = [
-  { path: '', component: HeaderComponent, pathMatch: 'full', canActivate: [AuthenticationGuard] }
-];
+import { HeaderComponent } from './header/header.component';
+import { CandidateAddComponent } from './candidate-add/candidate-add.component'
+import { FormsModule }   from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent
+    HeaderComponent,
+    CandidateAddComponent
   ],
   imports: [
-    RouterModule.forRoot(routes),
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
-    MsAdalAngular6Module.forRoot({
-      clientId: environment.clientId,
-      redirectUri: window.location.origin,
-      endpoints: {
-
-      },
-      navigateToLoginRequestUrl: false,
-      cacheLocation: 'sessionStorage',
-    })
+    HttpClientModule
   ],
-  providers: [AuthenticationGuard],
-  bootstrap: [AppComponent],
-  exports: [
-    RouterModule
-  ]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
