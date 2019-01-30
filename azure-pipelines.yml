@@ -4,13 +4,63 @@
 # https://aka.ms/yaml
 
 pool:
-  vmImage: 'Ubuntu-16.04'
+  vmImage: 'vs2017-win2016'
+
+variables:
+- group: Deploy
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: PowerShell@2
+  displayName: 'Build app and configure stack variables'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $path="env:$env:Build_SourceBranchName" + "_AppPrefix"
+      $stackName = (get-item $path -ErrorAction SilentlyContinue).Value
+      if (!$stackName) { $stackName = $env:AppPrefix + $env:Build_SourceBranchName }
+      $stackName = $stackName.ToLower().Replace("-", "")
+      Write-Host "stackName: $stackName"
+      Write-Host "##vso[task.setvariable variable=stackName;]$stackName"
+      $settings = Get-Content $env:Build_Repository_LocalPath\src\environments\environment.prod.ts
+      $settings = $settings -replace "%GraphqlUrl%", "$env:GraphqlUrl"
+      $settings = $settings -replace "%ClientId%", "$env:ClientId"
+      $settings = $settings -replace "%GraphClientId%", "$env:GraphClientId"
+      Write-Host $settings
+      $settings | Out-File $env:Build_Repository_LocalPath\src\environments\environment.prod.ts -Encoding ASCII
+      npm install
+      Write-Host "Install angular dependencies"
+      npm install -g @angular/cli
+      Write-Host "Angular CLI is installed."
+      npm install
+      Write-Host "Install angular CLI dependencies"
+      ng test --watch=false
+      ng build --prod --outputPath=$env:Build_ArtifactStagingDirectory
+      $zipLocation = "$env:Build_ArtifactStagingDirectory\$env:Build_BuildNumber.zip"
+      Compress-Archive -Path $env:Build_ArtifactStagingDirectory\* -DestinationPath $zipLocation
+      Write-Host "##vso[task.setvariable variable=zipLocation;]$zipLocation"
+
+- task: PublishTestResults@2
+  displayName: 'Publish tests results'
+  inputs:
+    testResultsFiles: '**/unit.xml'
+
+- task: AzureResourceGroupDeployment@2
+  displayName: 'Deploy stack resources'
+  inputs:
+    azureSubscription: '$(ServiceConnectionName)'
+    resourceGroupName: '$(stackName)'
+    location: '$(Location)'
+    templateLocation: 'Linked artifact'
+    csmFile: 'deployment\template.json'
+    overrideParameters: '-stackName $(stackName)'
+
+- task: AzureRmWebAppDeployment@4
+  displayName: 'Deploy app to prod'
+  inputs:
+    connectionType: 'AzureRM'
+    azureSubscription: '$(ServiceConnectionName)'
+    webAppName: '$(stackName)'
+    resourceGroupName: '$(stackName)'
+    appType: 'app'
+    packageForLinux: '$(zipLocation)'

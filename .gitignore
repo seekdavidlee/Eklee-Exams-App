@@ -43,3 +43,8 @@ testem.log
 .DS_Store
 Thumbs.db
 package-lock.json
+
+reports*
+.graphqlconfig
+
+/src/environments/*.local.ts

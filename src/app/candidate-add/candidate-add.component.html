@@ -1,0 +1,13 @@
+<div class="container">
+  <form #candidateAdd="ngForm">
+    <div class="form-group">
+      <label for="name">Display Name:</label>
+      <input id="name" name="name" type="text" class="form-control" [(ngModel)]="candidate.name" #name="ngModel" />
+    </div>
+    <div class="form-group">
+      <label for="type">Type:</label>
+      <input id="type" name="type" type="text" class="form-control" [(ngModel)]="candidate.type" #type="ngModel" />
+    </div>
+  </form>
+  <button (click)="save()">Save</button>
+</div>
