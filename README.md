@@ -1,3 +1,41 @@
+#Initial Codegen Setup
+
+The following documentation is used to generate the initial codegen.yml.
+
+https://graphql-code-generator.com/docs/getting-started/
+
+The following will create the necessary codegen.yml file.
+
+```
+gql-gen init
+```
+
+Note that on Windows, you may need to reference the following:
+
+```
+node_modules\.bin\gql-gen init
+```
+
+## Codegen
+
+We will need to install the necessary dependencies if this is your first time.
+
+```
+npm install
+```
+
+We need to generate an updated schema. The file will be generated as schema.graphql. Use the following to generate an updated schema.
+
+```
+graphql get-schema
+```
+
+Then, we can run the following to create an updated types file, src/app/graphql.ts.
+
+```
+npm run codegen.yml
+```
+
 # EkleeExamsApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.2.

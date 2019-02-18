@@ -1,0 +1,329 @@
+# source: http://localhost:7071/api/graph
+# timestamp: Sun Feb 17 2019 18:34:33 GMT-0600 (Central Standard Time)
+
+schema {
+  query: query
+  mutation: mutations
+}
+
+type candidate {
+  """Determines whether the candidate is active."""
+  active: Boolean!
+
+  """Date/time of when the candidate account was created."""
+  created: Date!
+
+  """Id of the candidate"""
+  id: ID
+
+  """The display name of the candidate."""
+  name: String!
+
+  """
+  Type of candidate. Either student, full time employed, part time employed.
+  """
+  type: String!
+}
+
+input candidateInput {
+  """Determines whether the candidate is active."""
+  active: Boolean!
+
+  """Date/time of when the candidate account was created."""
+  created: Date!
+
+  """Id of the candidate"""
+  id: ID = null
+
+  """The display name of the candidate."""
+  name: String!
+
+  """
+  Type of candidate. Either student, full time employed, part time employed.
+  """
+  type: String!
+}
+
+type candidatesearch {
+  """Id of the candidate"""
+  id: ID
+
+  """The display name of the candidate."""
+  name: String!
+}
+
+input candidatesearchInput {
+  """Id of the candidate"""
+  id: ID = null
+
+  """The display name of the candidate."""
+  name: String!
+}
+
+"""
+The `Date` scalar type represents a year, month and day in accordance with the
+[ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
+"""
+scalar Date
+
+input datefilterInput {
+  """Equal."""
+  equal: Date = null
+
+  """Greater equal than."""
+  greaterEqualThan: Date = null
+
+  """Greater than."""
+  greaterThan: Date = null
+
+  """Less equal than."""
+  lessEqualThan: Date = null
+
+  """Less than."""
+  lessThan: Date = null
+
+  """Not equal."""
+  notEqual: Date = null
+}
+
+"""
+The `DateTime` scalar type represents a date and time. `DateTime` expects
+timestamps to be formatted in accordance with the
+[ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
+"""
+scalar DateTime
+
+"""
+The `DateTimeOffset` scalar type represents a date, time and offset from UTC.
+`DateTimeOffset` expects timestamps to be formatted in accordance with the
+[ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
+"""
+scalar DateTimeOffset
+
+scalar Decimal
+
+type exam {
+  """Id of the candidate."""
+  candidateId: String
+
+  """Category of the exam"""
+  category: String!
+
+  """Id of the exam template used."""
+  examTemplateId: String
+
+  """Id of the exam."""
+  id: ID
+
+  """Name of the exam"""
+  name: String!
+
+  """Date/time of when the exm was taken."""
+  taken: Date!
+}
+
+input examInput {
+  """Id of the candidate."""
+  candidateId: String = null
+
+  """Category of the exam"""
+  category: String!
+
+  """Id of the exam template used."""
+  examTemplateId: String = null
+
+  """Id of the exam."""
+  id: ID = null
+
+  """Name of the exam"""
+  name: String!
+
+  """Date/time of when the exm was taken."""
+  taken: Date!
+}
+
+type examoutput {
+  """Candidate who took the exam."""
+  candidate: candidate
+
+  """Id of the candidate."""
+  candidateId: String
+
+  """Category of the exam"""
+  category: String!
+
+  """Exam template used."""
+  examTemplate: examtemplate
+
+  """Id of the exam template used."""
+  examTemplateId: String
+
+  """Id of the exam."""
+  id: ID
+
+  """Name of the exam"""
+  name: String!
+
+  """Date/time of when the exm was taken."""
+  taken: Date!
+}
+
+type examtemplate {
+  """Category of the exam"""
+  category: String!
+
+  """Date in which exam was created."""
+  created: Date!
+
+  """Date in which exam is released for use."""
+  effective: Date!
+
+  """Date in which exam is retired for use."""
+  expires: Date!
+
+  """Id of the exam template."""
+  id: ID
+
+  """Name of the exam"""
+  name: String!
+}
+
+input examtemplateInput {
+  """Category of the exam"""
+  category: String!
+
+  """Date in which exam was created."""
+  created: Date!
+
+  """Date in which exam is released for use."""
+  effective: Date!
+
+  """Date in which exam is retired for use."""
+  expires: Date!
+
+  """Id of the exam template."""
+  id: ID = null
+
+  """Name of the exam"""
+  name: String!
+}
+
+type examtemplatesearch {
+  """Category of the exam"""
+  category: String!
+
+  """Id of the exam template."""
+  id: ID
+
+  """Name of the exam"""
+  name: String!
+}
+
+input examtemplatesearchInput {
+  """Category of the exam"""
+  category: String!
+
+  """Id of the exam template."""
+  id: ID = null
+
+  """Name of the exam"""
+  name: String!
+}
+
+input guidfilterInput {
+  """Equal."""
+  equal: String = null
+}
+
+input itemwithguididInput {
+  """Id of the item instance."""
+  id: ID = null
+}
+
+"""
+The `Milliseconds` scalar type represents a period of time represented as the total number of milliseconds.
+"""
+scalar Milliseconds
+
+type mutations {
+  batchCreateCandidate(candidate: [candidateInput] = null): [candidate]
+  batchCreateCandidateSearch(candidatesearch: [candidatesearchInput] = null): [candidatesearch]
+  batchCreateExam(exam: [examInput] = null): [exam]
+  batchCreateExamTemplate(examtemplate: [examtemplateInput] = null): [examtemplate]
+  batchCreateExamTemplateSearch(examtemplatesearch: [examtemplatesearchInput] = null): [examtemplatesearch]
+  createCandidate(candidate: candidateInput!): candidate
+  createCandidateSearch(candidatesearch: candidatesearchInput!): candidatesearch
+  createExam(exam: examInput!): exam
+  createExamTemplate(examtemplate: examtemplateInput!): examtemplate
+  createExamTemplateSearch(examtemplatesearch: examtemplatesearchInput!): examtemplatesearch
+  deleteAllCandidate: status
+  deleteAllCandidateSearch: status
+  deleteAllExam: status
+  deleteAllExamTemplate: status
+  deleteAllExamTemplateSearch: status
+  deleteCandidate(candidate: itemwithguididInput!): status
+  deleteCandidateSearch(candidatesearch: candidatesearchInput!): candidatesearch
+  deleteExam(exam: itemwithguididInput!): status
+  deleteExamTemplate(examtemplate: itemwithguididInput!): status
+  deleteExamTemplateSearch(examtemplatesearch: examtemplatesearchInput!): examtemplatesearch
+  updateCandidate(candidate: candidateInput!): candidate
+  updateCandidateSearch(candidatesearch: candidatesearchInput!): candidatesearch
+  updateExam(exam: examInput!): exam
+  updateExamTemplate(examtemplate: examtemplateInput!): examtemplate
+  updateExamTemplateSearch(examtemplatesearch: examtemplatesearchInput!): examtemplatesearch
+}
+
+type query {
+  getCandidateById(
+    """Id of the candidate"""
+    id: guidfilterInput!
+  ): candidate
+  getExamById(
+    """Id of the exam."""
+    id: guidfilterInput!
+  ): exam
+  getExamsByNameAndTaken(
+    """Name of the exam"""
+    name: stringfilterInput!
+
+    """Date/time of when the exm was taken."""
+    taken: datefilterInput!
+  ): [examoutput]
+  getExamTemplateById(
+    """Id of the exam template."""
+    id: guidfilterInput!
+  ): examtemplate
+  searchExams(
+    """Search text."""
+    searchtext: searchfilterInput!
+  ): [examoutput]
+}
+
+input searchfilterInput {
+  """String equal."""
+  equal: String = null
+}
+
+"""
+The `Seconds` scalar type represents a period of time represented as the total number of seconds.
+"""
+scalar Seconds
+
+type status {
+  """Message describing the status of the request."""
+  message: String!
+}
+
+input stringfilterInput {
+  """String contains."""
+  contains: String = null
+
+  """String ends with."""
+  endsWith: String = null
+
+  """String equal."""
+  equal: String = null
+
+  """String starts with."""
+  startsWith: String = null
+}
